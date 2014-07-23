@@ -14,5 +14,6 @@ public class Manager {
     public void run()
     {
        buildMy = new Build4(); 
+       buildMy.createAndShowGUI();
     }
 }
