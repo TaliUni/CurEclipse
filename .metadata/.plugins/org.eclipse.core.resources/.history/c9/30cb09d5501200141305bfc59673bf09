@@ -95,7 +95,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	   listDir.add("mine");
     	   listDir.add("those");
     	   listDir.add("any");
-    	 //  listDir.add("last");
+    	   listDir.add("last");
     	   
            //Create the nodes.
     	   top = new DefaultMutableTreeNode(topNodeName);
@@ -167,25 +167,18 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     private void createNodeString()//List listDir)
     {
-    		int i;
+    	
     		directory = new DefaultMutableTreeNode(listDir.get(0));
     		top.add(directory);
 	    	//needs to be list as needs to be in order added (got from file system)
     		//index point 0 becomes directory and that directory gets added to "top" node
     		//so start for loop at 1
-	    	for(i = 1; i<listDir.size()-1;i=i+2) //while (listDir!=null)
+	    	for(int i = 1; i<listDir.size()-1;i=i+2) //while (listDir!=null)
 	    	{
 	    		underDir = new DefaultMutableTreeNode(listDir.get(i));//listDir next
 	        	directory.add(underDir);
 	    		directory = new DefaultMutableTreeNode(listDir.get(i+1));//listDir next
 	    		underDir.add(directory);
-	    	}
-	    	System.out.println("i = " + i);
-	    	if(i != listDir.size())
-	    	{
-	    		System.out.println("got here");
-	    		underDir = new DefaultMutableTreeNode(listDir.get(i));
-	    		directory.add(underDir);
 	    	}
     	
     }

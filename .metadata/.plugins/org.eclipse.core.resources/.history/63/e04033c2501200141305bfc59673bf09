@@ -20,24 +20,6 @@ I will need to run through filesystem and count the number of directories/files 
 Then add that number of different nodes
 Then add the directories/files etc to them auto
 
-Listing a Directory's Contents
-
-You can list all the contents of a directory by using the newDirectoryStream(Path) method. This method returns an object that implements the DirectoryStream interface. The class that implements the DirectoryStream interface also implements Iterable, so you can iterate through the directory stream, reading all of the objects. This approach scales well to very large directories.
-
-Remember: The returned DirectoryStream is a stream. If you are not using a try-with-resources statement, don't forget to close the stream in the finally block. The try-with-resources statement takes care of this for you.
-The following code snippet shows how to print the contents of a directory:
-
-Path dir = ...;
-try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
-    for (Path file: stream) {
-        System.out.println(file.getFileName());
-    }
-} catch (IOException | DirectoryIteratorException x) {
-    // IOException can never be thrown by the iteration.
-    // In this snippet, it can only be thrown by newDirectoryStream.
-    System.err.println(x);
-}
-
 
 */
 import javax.swing.*;
@@ -63,7 +45,10 @@ import java.util.ArrayList;
 
 public class Build4 extends JPanel implements TreeSelectionListener
 {
-   
+    //FileDialog is a standalone window and so can't go into a container
+    //it stops application from doing anything else until it's finished
+    FileDialog fileDil;
+    JButton openFileDil;
     JPanel panel;
     TextArea ta;
     //will be changed to link to working directory, but with name
@@ -82,7 +67,12 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     public  Build4()
     {
-      
+       /* setUpPanel();
+        setUpTree(topNodeName);
+        pack();
+        setVisible(true);
+        
+        setDefaultCloseOperation(this.DISPOSE_ON_CLOSE);*/
     	
     	
     	   super(new GridLayout(1,0));
@@ -95,7 +85,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	   listDir.add("mine");
     	   listDir.add("those");
     	   listDir.add("any");
-    	 //  listDir.add("last");
+    	   listDir.add("last");
     	   
            //Create the nodes.
     	   top = new DefaultMutableTreeNode(topNodeName);
@@ -117,7 +107,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
            //Create the HTML viewing pane.
            htmlPane = new JEditorPane();
            htmlPane.setEditable(false);
-         
+         //  initHelp();
            JScrollPane htmlView = new JScrollPane(htmlPane);
     
            //Add the scroll panes to a split pane.
@@ -154,38 +144,107 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     //----------------------------- setup methods --------------------------------------
     
+    /*set up the tree with "top" as top node
+     * then createNodes(top) method pulls in the nodes below the top node
+     * top node will be working directory, so need to pass in working directory as parameter
+     */
+  
+    public void setUpNodes(String topNodeName)
+    {
+    	DefaultMutableTreeNode top = new DefaultMutableTreeNode(topNodeName);
+    	createNodes(top);
+    }
     
+   /* public void setUpPanel()
+    {
+        panel = new JPanel();
+           
+        ta = new TextArea(50,50);
+        panel.add(ta);
+        
+        openFileDil = new JButton("open file dialog");
+        openFileDil.addActionListener(this);
+        panel.add(openFileDil);
+        
+        add(panel);
+        
+      
+    }*/
+    
+  /*  private void setupFileDialog()
+    {
+        fileDil = new FileDialog(this, "fileloader", FileDialog.LOAD);
+        fileDil.getDirectory();
+       fileDil.setVisible(true);
+       
+    }*/
     
     //---------------------------------- node methods---------------------------
     
     public void createNodes(DefaultMutableTreeNode top)
     {
-    	createNodeString();
+    	
+    	/*directory = new DefaultMutableTreeNode("c");
+    	top.add(directory);
+    	underDir = new DefaultMutableTreeNode("doc");
+    	directory.add(underDir);
+    	directory = new DefaultMutableTreeNode("uni");
+    	underDir.add(directory);
+    	underDir = new DefaultMutableTreeNode("test");
+    	directory.add(underDir);*/
+    	
+    	
+        
+       createNodeString();
+        
+        /*directory = new DefaultMutableTreeNode("Books for Java Programmers");
+        top.add(directory);*/
+      /*  
+        createDir("Books for java");
+        createUnderDir("underbooks");
+        createUnderDir("other");
+        
+        
+        createDir("testing");
+        createUnderDir("furthertest");
+        
+       /* book = new DefaultMutableTreeNode(new BookInfo
+            ("The Java Tutorial: A Short Course on the Basics",
+            "tutorial.html"));
+        category.add(book);*/
+    	
     }
     
+    private void createDir(String input)
+    {
+    	directory = new DefaultMutableTreeNode(input);
+    	top.add(directory);
+    }
     
+    private void createUnderDir(String input)
+    {
+    	underDir = new DefaultMutableTreeNode(input);
+    	directory.add(underDir);
+    }
     
     private void createNodeString()//List listDir)
     {
-    		int i;
+    	
     		directory = new DefaultMutableTreeNode(listDir.get(0));
     		top.add(directory);
 	    	//needs to be list as needs to be in order added (got from file system)
     		//index point 0 becomes directory and that directory gets added to "top" node
     		//so start for loop at 1
-	    	for(i = 1; i<listDir.size()-1;i=i+2) //while (listDir!=null)
+	    	for(int i = 1; i<listDir.size()-1;i=i+2) //while (listDir!=null)
 	    	{
 	    		underDir = new DefaultMutableTreeNode(listDir.get(i));//listDir next
 	        	directory.add(underDir);
 	    		directory = new DefaultMutableTreeNode(listDir.get(i+1));//listDir next
 	    		underDir.add(directory);
-	    	}
-	    	System.out.println("i = " + i);
-	    	if(i != listDir.size())
-	    	{
-	    		System.out.println("got here");
-	    		underDir = new DefaultMutableTreeNode(listDir.get(i));
-	    		directory.add(underDir);
+	        	
+	        	
+	        	
+	    		
 	    	}
     	
     }
@@ -193,8 +252,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     
     //------------------------ listener methods -----------------------------------
-   /* For any buttons leave as will be putting buttons in later
-    * public void actionPerformed(ActionEvent e)
+   /* public void actionPerformed(ActionEvent e)
     {
       if(e.getSource()==openFileDil)
       {
@@ -213,13 +271,44 @@ public class Build4 extends JPanel implements TreeSelectionListener
         if (node == null) return;
  
         Object nodeInfo = node.getUserObject();
-      
+      /*  if (node.isLeaf()) {
+            BookInfo book = (BookInfo)nodeInfo;
+            displayURL(book.bookURL);
+            if (DEBUG) {
+                System.out.print(book.bookURL + ":  \n    ");
+            }
+        } else {
+            displayURL(helpURL); 
+        }*/
+     /*   if (DEBUG) {
+            System.out.println(nodeInfo.toString());
+        }*/
     }
     
-   
+    //--------------------------------------- other methods--------------------------------------------
+    
+    
+     public String getFileName()
+    {
+        return fileDil.getFile();
+    }
      
      //---------------------------------additional classes-----------------------------------------------
-     
+     private class BookInfo 
+     {
+    	 public String bookName;
+    	 public URL bookURL;
+    	 public BookInfo(String book, String filename) 
+    	 {
+    		 bookName = book;
+    		// bookURL = filename;
+    	 }
+    	 public String toString() 
+    	 {
+    		 return bookName;
+    	 }
+    	 
+     }
      
      
 

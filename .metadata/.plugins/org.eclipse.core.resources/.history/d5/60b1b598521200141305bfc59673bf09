@@ -95,7 +95,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	   listDir.add("mine");
     	   listDir.add("those");
     	   listDir.add("any");
-    	 //  listDir.add("last");
+    	   listDir.add("last");
     	   
            //Create the nodes.
     	   top = new DefaultMutableTreeNode(topNodeName);
