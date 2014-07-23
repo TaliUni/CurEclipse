@@ -51,6 +51,14 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+
+
+
+
+
+
+
+
 import java.awt.event.*;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -66,7 +74,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
    
     JPanel panel;
     TextArea ta;
-   
+    //will be changed to link to working directory, but with name
    String topNodeName = "Top Node Name";
    JEditorPane htmlPane; 
    DefaultMutableTreeNode top = null;
@@ -79,7 +87,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     private static String lineStyle = "Horizontal";
     
     JTree myTree;
-    //array to contain directory paths
+    
     String[] fileArray;
     
     
@@ -112,21 +120,17 @@ public class Build4 extends JPanel implements TreeSelectionListener
   //--------------------------------------ending testing paths-----------------------------  	  
     	   
     	   //Works for windows, but need to have something generic.......??
-    	   //get the path for "C:\\"
     	   Path myPath = Paths.get("C:\\");
     	   
-    	   //make the "top" node equal to the string of the path "C:\\"
     	   top = new DefaultMutableTreeNode(myPath.toString());
     	   
     	   //change path to a file/directory (same)
     	   File myFile = new File(myPath.toString());
     	   
-    	   //I know that c is a directory, so don't need to check here, but 
-    	   //creating an array of the list of strings of files/directories within the first path
     	   fileArray = myFile.list();
     	   
     	   
-    	   /*
+    	   
     	   listDir = new ArrayList<String>();
     	   listDir.add("c");
     	   listDir.add("doc");
@@ -134,7 +138,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	   listDir.add("mine");
     	   listDir.add("those");
     	   listDir.add("any");
-    	 //  listDir.add("last");*/
+    	 //  listDir.add("last");
     	   
            //Create the nodes.
     	  
@@ -233,11 +237,13 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	//----------------if use an array Just placing the next down list for directory ---------------------------------------
     	int i;
 		
-    
+    	//needs to be list as needs to be in order added (got from file system)
+		//index point 0 becomes directory and that directory gets added to "top" node
+		//so start for loop at 1
     	for(i = 0; i<fileArray.length;i++) //while (listDir!=null)
     	{
     		directory = new DefaultMutableTreeNode(fileArray[i]);//listDir next
-        	top.add(directory);
+        	top.add(underDir);
     		
     	}
     	

@@ -51,6 +51,14 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+
+
+
+
+
+
+
+
 import java.awt.event.*;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -66,7 +74,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
    
     JPanel panel;
     TextArea ta;
-   
+    //will be changed to link to working directory, but with name
    String topNodeName = "Top Node Name";
    JEditorPane htmlPane; 
    DefaultMutableTreeNode top = null;
@@ -79,8 +87,6 @@ public class Build4 extends JPanel implements TreeSelectionListener
     private static String lineStyle = "Horizontal";
     
     JTree myTree;
-    //array to contain directory paths
-    String[] fileArray;
     
     
     public  Build4()
@@ -90,7 +96,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	
     	   super(new GridLayout(1,0));
   //-----------------------------------testing paths------------------------------------  	   
- /*   	   Path myPath = Paths.get("C:\\");
+    	   Path myPath = Paths.get("C:\\");
     	   System.out.format("toString: %s%n", myPath.toString());
     	   System.out.format("getFileName: %s%n", myPath.getFileName());
     	   System.out.format("getParent: %s%n", myPath.getParent());
@@ -107,37 +113,21 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	   {
     		   System.out.println(fileArray[i] +"\n");
     	   }
-    	*/  
+    	  
     	   
   //--------------------------------------ending testing paths-----------------------------  	  
-    	   
-    	   //Works for windows, but need to have something generic.......??
-    	   //get the path for "C:\\"
-    	   Path myPath = Paths.get("C:\\");
-    	   
-    	   //make the "top" node equal to the string of the path "C:\\"
-    	   top = new DefaultMutableTreeNode(myPath.toString());
-    	   
-    	   //change path to a file/directory (same)
-    	   File myFile = new File(myPath.toString());
-    	   
-    	   //I know that c is a directory, so don't need to check here, but 
-    	   //creating an array of the list of strings of files/directories within the first path
-    	   fileArray = myFile.list();
-    	   
-    	   
-    	   /*
     	   listDir = new ArrayList<String>();
+    	   
     	   listDir.add("c");
     	   listDir.add("doc");
     	   listDir.add("uni");
     	   listDir.add("mine");
     	   listDir.add("those");
     	   listDir.add("any");
-    	 //  listDir.add("last");*/
+    	 //  listDir.add("last");
     	   
            //Create the nodes.
-    	  
+    	   top = new DefaultMutableTreeNode(topNodeName);
     	   directory = new DefaultMutableTreeNode("testDir");
           	underDir = new DefaultMutableTreeNode("testUnderDir");
            createNodes(top);
@@ -206,8 +196,6 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     private void createNodeString()//List listDir)
     {
-    	//------------------if use an arraylist---------------------------
-    	/*
     		int i;
     		directory = new DefaultMutableTreeNode(listDir.get(0));
     		top.add(directory);
@@ -228,24 +216,8 @@ public class Build4 extends JPanel implements TreeSelectionListener
 	    		underDir = new DefaultMutableTreeNode(listDir.get(i));
 	    		directory.add(underDir);
 	    	}
-	    	*/
-    	
-    	//----------------if use an array Just placing the next down list for directory ---------------------------------------
-    	int i;
-		
-    
-    	for(i = 0; i<fileArray.length;i++) //while (listDir!=null)
-    	{
-    		directory = new DefaultMutableTreeNode(fileArray[i]);//listDir next
-        	top.add(directory);
-    		
-    	}
-    	
-    	
     	
     }
-    
-    
     
     
     
