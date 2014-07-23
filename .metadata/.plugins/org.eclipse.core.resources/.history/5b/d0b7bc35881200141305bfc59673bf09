@@ -153,7 +153,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     public void createAndShowGUI()
     {
   //Create and set up the window.
-    JFrame frame = new JFrame("Tali File Browser");
+    JFrame frame = new JFrame("TreeDemo");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     //Add content to the window.
@@ -173,7 +173,6 @@ public class Build4 extends JPanel implements TreeSelectionListener
     public void createNodes(DefaultMutableTreeNode top)
     {
     	createNodeString();
-    	
     }
     
     

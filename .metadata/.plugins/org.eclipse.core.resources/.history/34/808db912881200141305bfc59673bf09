@@ -35,7 +35,7 @@ The following code snippet shows how to print the contents of a directory:
 Path dir = ...;
 try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
     for (Path file: stream) {
-        
+        System.out.println(file.getFileName());
     }
 } catch (IOException | DirectoryIteratorException x) {
     // IOException can never be thrown by the iteration.
@@ -153,7 +153,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     public void createAndShowGUI()
     {
   //Create and set up the window.
-    JFrame frame = new JFrame("Tali File Browser");
+    JFrame frame = new JFrame("TreeDemo");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     //Add content to the window.
@@ -173,7 +173,6 @@ public class Build4 extends JPanel implements TreeSelectionListener
     public void createNodes(DefaultMutableTreeNode top)
     {
     	createNodeString();
-    	
     }
     
     
@@ -274,7 +273,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     {
       if(e.getSource()==openFileDil)
       {
-          
+          System.out.println("testing");
          setupFileDialog();
           ta.setText(getFileName());
       
@@ -301,7 +300,8 @@ public class Build4 extends JPanel implements TreeSelectionListener
         /*
          * File f = (File)node;
          */
-        	   
+        System.out.println(testFile.toString());
+        System.out.println(testFile.isDirectory()); 	   
  	   
  	   
  	   node.removeAllChildren();
@@ -321,10 +321,11 @@ public class Build4 extends JPanel implements TreeSelectionListener
 	        	//directory.add(......)
 	        	
 	        	if(testFile.listFiles()[i].isDirectory()==true)
-	        	{
+	        	{System.out.println("line 380 getting here");
+	        	System.out.println(testFile.listFiles()[i].getName());
 	        		for(int j = 0; j<testFile.listFiles()[i].listFiles().length; j++)
 	        		{
-	        			
+	        			System.out.println("line 380 getting here");
 	        			underDir = new DefaultMutableTreeNode(testFile.listFiles()[i].listFiles()[j]);
 	        			directory.add(underDir);
 	        		}

@@ -172,7 +172,7 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     public void createNodes(DefaultMutableTreeNode top)
     {
-    	createNodeString();
+    	//createNodeString();
     	
     }
     
