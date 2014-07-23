@@ -5,6 +5,11 @@ package overview;
 Build4
 Creating file browser
 Spec: create a file browser
+
+create a tree that opens up to show files and directories.
+DONE 23rd July 2014
+
+Gummphy notes to keep-----------------------------------------------------
 Terms: FileVisitor FileTree, walking the filetree, visitor pattern
 File Browser GUI
 FileBro
@@ -51,9 +56,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import java.awt.event.*;
-import java.net.URL;
-import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -65,14 +67,15 @@ public class Build4 extends JPanel implements TreeSelectionListener
 {
    
     JPanel panel;
-    TextArea ta;
+ 
+   JEditorPane htmlPane;
    
-   String topNodeName = "Top Node Name";
-   JEditorPane htmlPane; 
    DefaultMutableTreeNode top = null;
    DefaultMutableTreeNode directory = null;
    DefaultMutableTreeNode underDir = null;
-   ArrayList<String> listDir;
+   
+  // File addNode = null;
+  // ArrayList<String> listDir;
    //Path myFile;
     
     //lineStyle s are "Angled" (the default), "Horizontal", and "None".
@@ -80,7 +83,10 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     JTree myTree;
     //array to contain directory paths
-    String[] fileArray;
+    File[] fileArray1;
+    File[] fileArray2;
+    
+    File topNode;
     
     
     public  Build4()
@@ -89,62 +95,29 @@ public class Build4 extends JPanel implements TreeSelectionListener
     	
     	
     	   super(new GridLayout(1,0));
-  //-----------------------------------testing paths------------------------------------  	   
- /*   	   Path myPath = Paths.get("C:\\");
-    	   System.out.format("toString: %s%n", myPath.toString());
-    	   System.out.format("getFileName: %s%n", myPath.getFileName());
-    	   System.out.format("getParent: %s%n", myPath.getParent());
-    	   System.out.format("getRoot: %s%n", myPath.getRoot());
-    	   System.out.println(myPath.getFileName());
-    	   System.out.println(myPath.getRoot());
-    	   
-    	   File myFile = new File(myPath.toString());
-    	   Boolean isDir = myFile.isDirectory();
-    	   System.out.println(isDir);
-    	   
-    	   String[] fileArray = myFile.list();
-    	   for(int i = 0; i<fileArray.length; i++)
-    	   {
-    		   System.out.println(fileArray[i] +"\n");
-    	   }
-    	*/  
-    	   
-  //--------------------------------------ending testing paths-----------------------------  	  
+  	  
     	   
     	   //Works for windows, but need to have something generic.......??
+
+//HARD CODE to c
     	   //get the path for "C:\\"
     	   Path myPath = Paths.get("C:\\");
     	   
-    	   //make the "top" node equal to the string of the path "C:\\"
-    	   top = new DefaultMutableTreeNode(myPath.toString());
+    	   //make the "top" node equal to "myPath"
+    	   top = new DefaultMutableTreeNode(new FileDisplay(myPath.toString()));
     	   
-    	   //change path to a file/directory (same)
-    	   File myFile = new File(myPath.toString());
+    	   topNode = new File(myPath.toString());
+    	
     	   
-    	   //I know that c is a directory, so don't need to check here, but 
-    	   //creating an array of the list of strings of files/directories within the first path
-    	   fileArray = myFile.list();
-    	   
-    	   
-    	   /*
-    	   listDir = new ArrayList<String>();
-    	   listDir.add("c");
-    	   listDir.add("doc");
-    	   listDir.add("uni");
-    	   listDir.add("mine");
-    	   listDir.add("those");
-    	   listDir.add("any");
-    	 //  listDir.add("last");*/
-    	   
-           //Create the nodes.
-    	  
-    	   directory = new DefaultMutableTreeNode("testDir");
-          	underDir = new DefaultMutableTreeNode("testUnderDir");
-           createNodes(top);
+    	      	   
+           //Create the nodes. Set up with just the layer below the top node showing, may change this to just have top node.
+    	   createNodes(top);
            
            
            //Create a tree that allows one selection at a time.
+    	   //with top as the top node
            myTree = new JTree(top);
+          
            myTree.getSelectionModel().setSelectionMode (TreeSelectionModel.SINGLE_TREE_SELECTION);
     
            //Listen for when the selection changes.
@@ -204,47 +177,92 @@ public class Build4 extends JPanel implements TreeSelectionListener
     
     
     
-    private void createNodeString()//List listDir)
+    private void createNodeString()
     {
-    	//------------------if use an arraylist---------------------------
-    	/*
-    		int i;
-    		directory = new DefaultMutableTreeNode(listDir.get(0));
-    		top.add(directory);
-	    	//needs to be list as needs to be in order added (got from file system)
-    		//index point 0 becomes directory and that directory gets added to "top" node
-    		//so start for loop at 1
-	    	for(i = 1; i<listDir.size()-1;i=i+2) //while (listDir!=null)
-	    	{
-	    		underDir = new DefaultMutableTreeNode(listDir.get(i));//listDir next
-	        	directory.add(underDir);
-	    		directory = new DefaultMutableTreeNode(listDir.get(i+1));//listDir next
-	    		underDir.add(directory);
-	    	}
-	    	System.out.println("i = " + i);
-	    	if(i != listDir.size())
-	    	{
-	    		System.out.println("got here");
-	    		underDir = new DefaultMutableTreeNode(listDir.get(i));
-	    		directory.add(underDir);
-	    	}
-	    	*/
+    	/*Runs through the directories and files contained within the top node
+    	 * adds then to the tree
+    	 * checks to see if any of them are directories, and if they contain anything
+    	 * if they do, then adds those files to those directories (so that the node shows as a
+    	 * node, rather than a leaf)
+    	 * SEE if better way of doing this, can I require a node to be displayed as a node
+    	 * without having to add children to it.  This would be more efficient, as currently
+    	 * when actually go into a node, I delete this info, before restarting.
+    	 * 
+    	 */
     	
-    	//----------------if use an array Just placing the next down list for directory ---------------------------------------
+    	fileArray1 = topNode.listFiles();
     	int i;
-		
-    
-    	for(i = 0; i<fileArray.length;i++) //while (listDir!=null)
+		    
+    	for(i = 0; i<fileArray1.length;i++) 
     	{
-    		directory = new DefaultMutableTreeNode(fileArray[i]);//listDir next
+    		//add all contained files/directories to topnode
+    		
+    		directory = new DefaultMutableTreeNode(new FileDisplay (fileArray1[i]));
         	top.add(directory);
+    		
+        	if(fileArray1[i].isDirectory()&&fileArray1[i].listFiles()!=null)
+        	{
+        		//add contained directories/files to directory, simply so that directory node shows as node
+        		//rather than leaf
+        		//NOTE can try playing about with renderer to set up so if a node is a directory renders as node rather than leaf
+        		//http://stackoverflow.com/questions/13746880/making-a-jtree-leaf-appear-as-an-empty-directory-and-not-a-file
+        		fileArray2 = fileArray1[i].listFiles();
+	        	for(int j=0; j<fileArray2.length;j++)
+	        	{
+	        		underDir = new DefaultMutableTreeNode(new FileDisplay(fileArray2[j]));
+	            	directory.add(underDir);
+	        	}
+        	}
+        	
+        	
     		
     	}
     	
     	
     	
+    	
+    	
     }
-    
+    //-------------------------------------new class for node, so that it contains all info of file, but only displays shortname---------
+    //if simply added a File, then the full path would show (as File.toString() contains the full path. If I used File.getName() then
+    //node would not recognise the node as a File, but as a string, so this overcomes that.
+    private class FileDisplay
+    {
+    	private String shortName;
+    	private String path;
+    	private File file;
+    	
+    	public FileDisplay(File file)
+    	{
+    		this.file = file;
+    		shortName = file.getName();
+    		path = file.getPath();
+    	}
+    	public FileDisplay(String string)
+    	{
+    		this.file = new File(string);
+    		shortName = file.getName();
+    		path = file.getPath();
+    	}
+    	
+    	public File getFile()
+    	{
+    		return file;
+    	}
+    	
+    	public String getShortName()
+    	{
+    		return shortName;
+    	}
+    	public String getPath()
+    	{
+    		return path;
+    	}
+    	public String toString()
+    	{
+    		return shortName;
+    	}
+    }
     
     
     
@@ -269,8 +287,51 @@ public class Build4 extends JPanel implements TreeSelectionListener
  
         if (node == null) return;
  
+      //  Object nodeInfo = node.getUserObject();
+        
+        //check to see if all nodes within are files or directories
+        //if files leave
+        //if directories, add their own children to them
+        
         Object nodeInfo = node.getUserObject();
-      
+        Path thisPath = Paths.get(nodeInfo.toString());//myTree.getLastSelectedPathComponent().toString());
+        FileDisplay fileInfo = (FileDisplay)node.getUserObject();//new File(thisPath.toString());
+        File testFile = fileInfo.getFile();//fileInfo.getFile();
+        /*
+         * File f = (File)node;
+         */
+        System.out.println(testFile.toString());
+        System.out.println(testFile.isDirectory()); 	   
+ 	   
+ 	   
+ 	   node.removeAllChildren();
+        
+        if(testFile.isDirectory()==true)
+        {
+        	for(int i = 0; i<testFile.listFiles().length; i++)
+        	{
+        		
+	        	directory = new DefaultMutableTreeNode(new FileDisplay (testFile.listFiles()[i]));
+	        	node.add(directory);
+	        	//node.add(fileInfo);
+	        	//check fileInfo.listFiles()[i] == directory
+	        	//if it is
+	        	//get it's list
+	        	//add each on list to directory
+	        	//directory.add(......)
+	        	
+	        	if(testFile.listFiles()[i].isDirectory()==true)
+	        	{System.out.println("line 380 getting here");
+	        	System.out.println(testFile.listFiles()[i].getName());
+	        		for(int j = 0; j<testFile.listFiles()[i].listFiles().length; j++)
+	        		{
+	        			System.out.println("line 380 getting here");
+	        			underDir = new DefaultMutableTreeNode(testFile.listFiles()[i].listFiles()[j]);
+	        			directory.add(underDir);
+	        		}
+	        	}
+        	}
+        }
     }
     
    
