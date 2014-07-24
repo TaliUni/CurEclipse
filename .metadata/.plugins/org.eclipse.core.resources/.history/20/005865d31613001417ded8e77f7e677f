@@ -3,9 +3,8 @@ package overview;
 import java.io.File;
 
 public class FileDisplay {
-	//-------------------------------------new class for node, so that it contains all info of file, but only displays shortname---------
-	/*    //if simply added a File, then the full path would show (as File.toString() contains the full path. If I used File.getName() then
-	    //node would not recognise the node as a File, but as a string, so this overcomes that.*/
+	 //if simply added a File, then the full path would show (as File.toString() contains the full path. If I used File.getName() then
+    //node would not recognise the node as a File, but as a string, so this overcomes that.
    
     	private String shortName;
     	private String path;
