@@ -169,7 +169,7 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
                          //   mySingleClick(selRow, selPath);
                         }
                         
-                        else if(e.getButton()==1){//e.getClickCount() == 2) {
+                        else if(e.getButton()==2){//e.getClickCount() == 2) {
                           //  myDoubleClick(selRow, selPath);
                       //  {
                         	ta.setText(selPath.toString());

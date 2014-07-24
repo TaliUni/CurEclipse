@@ -161,18 +161,17 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
           	
           	MouseListener ml = new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
-                	System.out.println(e.getButton() + " line 164");
+                	
                     int selRow = myTree.getRowForLocation(e.getX(), e.getY());
                     TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
                     if(selRow != -1) {
-                        if(e.getClickCount() == 3) {
+                        if(e.getClickCount() == 1) {
                          //   mySingleClick(selRow, selPath);
                         }
-                        
-                        else if(e.getButton()==1){//e.getClickCount() == 2) {
+                        else if(e.getButton()==2){//e.getClickCount() == 2) {
                           //  myDoubleClick(selRow, selPath);
                       //  {
-                        	ta.setText(selPath.toString());
+                        	ta.setText("click worked");
                         }
                     }
                 }

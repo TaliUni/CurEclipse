@@ -49,7 +49,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -59,7 +58,6 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import java.nio.file.Path;
@@ -69,7 +67,7 @@ import java.util.ArrayList;
 
 
 
-public class Build4_2 extends JPanel implements TreeSelectionListener
+public class Build4_2 extends JPanel implements ActionListener, TreeSelectionListener
 {
 
 	//------------------------------------GUI graphics--------------------------------------
@@ -112,7 +110,19 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
     	
     	super(new GridLayout(1,0));
     	
+    	//---------------------setup popups----------------------------------------------------------
     	
+    	popup = new JPopupMenu();
+    	menuItem = new JMenuItem("Mnu item");
+    	menuItem.addActionListener(this);
+    	popup.add(menuItem);
+    	menuItem = new JMenuItem("a diff men item");
+    	menuItem.addActionListener(this);
+    	popup.add(menuItem);
+    	
+    	MouseListener popupListener = new PopupListener();
+    	output.addMouseListener(popupListener);
+    	menuBar.addMouseListener(popupListener);
     	
     	
     	
@@ -146,46 +156,6 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
            
            myTree.setCellRenderer(new MyTreeRender());
            
-         //---------------------setup popups----------------------------------------------------------
-          	
-          	popup = new JPopupMenu();
-          	menuItem = new JMenuItem("Mnu item");
-          	//menuItem.addActionListener(this);
-          	popup.add(menuItem);
-          	menuItem = new JMenuItem("a diff men item");
-          	//menuItem.addActionListener(this);
-          	popup.add(menuItem);
-          	
-          	MouseListener popupListener = new PopupListener();
-         // 	myTree.addMouseListener(popupListener);
-          	
-          	MouseListener ml = new MouseAdapter() {
-                public void mousePressed(MouseEvent e) {
-                	System.out.println(e.getButton() + " line 164");
-                    int selRow = myTree.getRowForLocation(e.getX(), e.getY());
-                    TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
-                    if(selRow != -1) {
-                        if(e.getClickCount() == 3) {
-                         //   mySingleClick(selRow, selPath);
-                        }
-                        
-                        else if(e.getButton()==1){//e.getClickCount() == 2) {
-                          //  myDoubleClick(selRow, selPath);
-                      //  {
-                        	ta.setText(selPath.toString());
-                        }
-                    }
-                }
-            };
-            
-            myTree.addMouseListener(ml);
-            
-      //    	directory.addMouseListener(popupListener);
-        //  	underDir.addMouseListener(popupListener);
-          	//topNode.addMouseListener(popupListener);
-          	
-          	//menuBar.addMouseListener(popupListener);
-           
            //-----------------------------------setup graphics: panels etc ----------------------------------
            
            //Create the scroll pane and add the tree to it. 
@@ -217,7 +187,7 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
            
    }
 	//class---------
-	class PopupListener extends MouseAdapter
+	class Popuplistener extends MouseAdapter
 	{
 		public void mousePressed(MouseEvent e)
 		{
@@ -255,7 +225,6 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
     }
     
     //----------------------------- setup methods --------------------------------------
-    
     
     
     
