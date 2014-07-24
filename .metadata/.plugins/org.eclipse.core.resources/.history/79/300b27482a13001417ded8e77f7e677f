@@ -2,10 +2,8 @@ package overview;
 
 
 /*
-Build4_2
-Creating file browser
-Spec: create a file browser
-
+Build4_3
+Already done:
 Created JTree, with FileDisplay as nodes.  FileDisplay are class that take in File and have their own toString() method
 which produces string of shortname.  getFile() retrieves the original file.
 Nodes are created at start, with starting node of top = input "working directory" currently C:\\
@@ -16,10 +14,13 @@ If a node is "not a directory" - then clicking on the node puts the file name in
 Created a new renderer for the tree, to mean that directories show as differnt to files (as previously only showed as folders
 if had already created and added the children to them, which was inefficient).
 
-Added in popup menu which comes with a rightclick anywhere in JTree
+Added in mouseclick events and popup.
 
+Creating file browser
+Spec: create a file browser
 
-DONE 24th July 2014
+create a tree that opens up to show files and directories.
+DONE 23rd July 2014
 
 Gummphy notes to keep-----------------------------------------------------
 Terms: FileVisitor FileTree, walking the filetree, visitor pattern
@@ -81,7 +82,7 @@ import java.util.ArrayList;
 
 
 
-public class Build4_2 extends JPanel implements TreeSelectionListener
+public class Build4_3 extends JPanel implements TreeSelectionListener
 {
 
 	//------------------------------------GUI graphics--------------------------------------
@@ -117,7 +118,7 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
 	String initialPathStr;
 
 
-	public  Build4_2()
+	public  Build4_3()
     {
       
     	//-------------------------- layout --------------------------------------------------------
@@ -169,9 +170,9 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
           	popup.add(menuItem);
           	
           	MouseListener popupListener = new PopupListener();
-         	myTree.addMouseListener(popupListener);
+         // 	myTree.addMouseListener(popupListener);
           	
-         /* 	MouseListener ml = new MouseAdapter() {
+          	MouseListener ml = new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
                 	System.out.println(e.getButton() + " line 164");
                     int selRow = myTree.getRowForLocation(e.getX(), e.getY());
@@ -190,9 +191,13 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
                 }
             };
             
-            myTree.addMouseListener(ml);*/
+            myTree.addMouseListener(ml);
             
-      
+      //    	directory.addMouseListener(popupListener);
+        //  	underDir.addMouseListener(popupListener);
+          	//topNode.addMouseListener(popupListener);
+          	
+          	//menuBar.addMouseListener(popupListener);
            
            //-----------------------------------setup graphics: panels etc ----------------------------------
            
@@ -254,7 +259,7 @@ public class Build4_2 extends JPanel implements TreeSelectionListener
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     //Add content to the window.
-    frame.add(new Build4_2());
+    frame.add(new Build4_3());
     
 
     //Display the window.

@@ -6,7 +6,6 @@ INDEX VERSION 1.127+C:\Users\User\Documents\uni\Dissertation\CurEclipse\.metadat
 4108727661.index
 163172794.index
 3974580528.index
-763185342.index
 3065916431.index
 4155206848.index
 4041092966.index
