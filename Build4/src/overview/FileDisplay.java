@@ -39,8 +39,20 @@ public class FileDisplay {
     	}
     	public String toString()
     	{
-    		return shortName;
+    		
+    		if (file.getName().isEmpty())
+    		{
+    			return file.getPath();
+    		}
+    		else
+    		{
+    			
+    			return shortName;
+    		}
+    			
+    		
     	}
+    	
     	public boolean isDirectory()
     	{
     		return file.isDirectory();

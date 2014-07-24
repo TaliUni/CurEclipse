@@ -11,8 +11,9 @@ which produces string of shortname.  getFile() retrieves the original file.
 Nodes are created at start, with starting node of top = input "working directory" currently C:\\
 And then the layer below also showing
 Further children of nodes, are not created.
-On clicking on a node (left hand click, one click) - this creates the next layer of nodes (of the children of that node)
-If a node is "not a directory" - then clicking on the node puts the file name into the text area at the bottom
+On clicking on a node (left hand click and mousepad click, one click) - highlights that node.
+click lh click (and mousepad click), double click - this creates the next layer of nodes (of the children of that node)
+If a node is "not a directory" - then dble clicking, lh mouse, on the node puts the file name into the text area at the bottom
 Created a new renderer for the tree, to mean that directories show as differnt to files (as previously only showed as folders
 if had already created and added the children to them, which was inefficient).
 

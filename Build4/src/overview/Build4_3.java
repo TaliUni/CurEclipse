@@ -3,14 +3,17 @@ package overview;
 
 /*
 Build4_3
-Already done:
 
+To Do:
 
-Creating file browser
-Spec: create a file browser
+Change listener for JTree, and all listeners.
+Add in mouselistener.
+Connect popup menu to come up 1. on right click on directory/file 
+Retain double click with left mouse/mousepad on file/directory opens up the next level.
 
-create a tree that opens up to show files and directories.
-DONE 23rd July 2014
+All above done 24 Jul 14
+To do: 2. popup to come up on hover over dir/file
+
 
 Gummphy notes to keep-----------------------------------------------------
 Terms: FileVisitor FileTree, walking the filetree, visitor pattern
@@ -160,34 +163,30 @@ public class Build4_3 extends JPanel implements TreeSelectionListener
           	popup.add(menuItem);
           	
           	MouseListener popupListener = new PopupListener();
+          	//add in listener when decide what want to do with click on menu
          // 	myTree.addMouseListener(popupListener);
           	
           	MouseListener ml = new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
-                	System.out.println(e.getButton() + " line 164");
+                	
                     int selRow = myTree.getRowForLocation(e.getX(), e.getY());
                     TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
                     if(selRow != -1) {
-                        if(e.getClickCount() == 3) {
-                         //   mySingleClick(selRow, selPath);
-                        }
                         
-                        else if(e.getButton()==1){//e.getClickCount() == 2) {
-                          //  myDoubleClick(selRow, selPath);
-                      //  {
+                    	
+                        if(e.getButton()==3&&e.getClickCount() == 2) {
+                        	
+                        	popup.show(e.getComponent(), e.getX(), e.getY());
                         	ta.setText(selPath.toString());
                         }
+                        
                     }
                 }
             };
             
             myTree.addMouseListener(ml);
             
-      //    	directory.addMouseListener(popupListener);
-        //  	underDir.addMouseListener(popupListener);
-          	//topNode.addMouseListener(popupListener);
-          	
-          	//menuBar.addMouseListener(popupListener);
+      
            
            //-----------------------------------setup graphics: panels etc ----------------------------------
            
