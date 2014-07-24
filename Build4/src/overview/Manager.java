@@ -3,8 +3,8 @@ package overview;
 public class Manager {
     
     
-    
-    Build4 buildMy;
+    Build4_1 buildMy4_1;
+    Build4 buildMy4;
     
     public Manager()
     {
@@ -13,7 +13,11 @@ public class Manager {
     
     public void run()
     {
-       buildMy = new Build4(); 
-       buildMy.createAndShowGUI();
+    /*   buildMy4 = new Build4(); 
+       buildMy4.createAndShowGUI();
+       */
+    	
+       buildMy4_1 = new Build4_1();
+       buildMy4_1.createAndShowGUI();
     }
 }
