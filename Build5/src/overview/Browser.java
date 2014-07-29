@@ -20,13 +20,18 @@ import javax.swing.tree.TreeSelectionModel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 
 
-public class Browser extends JPanel implements TreeSelectionListener
+public class Browser extends JPanel implements TreeSelectionListener, Subject
 {
-
+	//------------------------Observer Pattern--------------------------------------------
+	private List<Observer> registeredObservers = new LinkedList<Observer>();
+	
+	
 	//------------------------------------GUI graphics--------------------------------------
 	JPanel panel;
 	JEditorPane htmlPane;
@@ -58,11 +63,19 @@ public class Browser extends JPanel implements TreeSelectionListener
 	
 	Path initialPath;
 	String initialPathStr;
+	
+	//--------------------------------id to identify which browser is sending info etc--------------
+	
+	String id;
+	
+	//-------------------------curFile = the current file that focus is on-------------------------
+	File curFile;
 
 
-	public  Browser()
+	public  Browser(String id)
     {
       
+		
     	//-------------------------- layout --------------------------------------------------------
     	
     	super(new GridLayout(1,0));
@@ -71,7 +84,8 @@ public class Browser extends JPanel implements TreeSelectionListener
     	
     	
     	
-    	
+    	//-------------------------setup id----------------------------------------------------
+    	this.id = id;
     	
   	  
     	//--------------------------setup initial path/entry point to file system----------------------
@@ -125,21 +139,47 @@ public class Browser extends JPanel implements TreeSelectionListener
           	//add in listener when decide what want to do with click on menu
          // 	myTree.addMouseListener(popupListener);
           	
-          	MouseListener ml = new MouseAdapter() {
-                public void mousePressed(MouseEvent e) {
+          	MouseListener ml = new MouseAdapter() 
+          	{
+          		public void mouseEntered(MouseEvent e)
+          		{
+          			int selRow = myTree.getRowForLocation(e.getX(), e.getY());
+                    TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
+                    if(selRow != -1) 
+                    {
+                        
+                    	
+                        
+                        	
+                        	popup.show(e.getComponent(), e.getX(), e.getY());
+                        	System.out.println("line 139 output");
+                        	//ta.setText(selPath.toString());
+                        	
+                        
+                        
+                    }
+                    notifyObservers();
+          		}
+                public void mousePressed(MouseEvent e) 
+                {
                 	
                     int selRow = myTree.getRowForLocation(e.getX(), e.getY());
                     TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
-                    if(selRow != -1) {
-                        
+                    if(selRow != -1) 
+                    {
+                    	popup.show(e.getComponent(), e.getX(), e.getY());
                     	
-                        if(e.getButton()==3&&e.getClickCount() == 2) {
+                    /*    if(e.getButton()==3&&e.getClickCount() == 2) 
+                        {
                         	
                         	popup.show(e.getComponent(), e.getX(), e.getY());
-                        	ta.setText(selPath.toString());
-                        }
+                        	System.out.println("line 139 output");
+                        	//ta.setText(selPath.toString());
+                        	
+                        }*/
                         
                     }
+                    notifyObservers();
                 }
             };
             
@@ -151,35 +191,41 @@ public class Browser extends JPanel implements TreeSelectionListener
            
            //Create the scroll pane and add the tree to it. 
            JScrollPane treeView = new JScrollPane(myTree);
+           Dimension minimumSize = new Dimension(100, 50);
+           add(treeView);
     
            //Create the HTML viewing pane.
-           htmlPane = new JEditorPane();
+        /*   htmlPane = new JEditorPane();
            htmlPane.setEditable(false);
            
-           ta = new JTextArea(50,50);
-           ta.setText("testing");
+          
          
            JScrollPane htmlView = new JScrollPane(htmlPane);
+           htmlView.add(treeView);
     
            //Add the scroll panes to a split pane.
-           JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        /*   JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
            splitPane.setTopComponent(treeView);
-           splitPane.setBottomComponent(ta);
+           splitPane.setBottomComponent(ta);*/
     
-           Dimension minimumSize = new Dimension(100, 50);
-           htmlView.setMinimumSize(minimumSize);
+           
+        /*   htmlView.setMinimumSize(minimumSize);
            treeView.setMinimumSize(minimumSize);
-           splitPane.setDividerLocation(100); 
-           splitPane.setPreferredSize(new Dimension(500, 300));
+          /* splitPane.setDividerLocation(100); 
+           splitPane.setPreferredSize(new Dimension(500, 300));*/
     
            //Add the split pane to this panel.
-           add(splitPane);
+           //add(splitPane);
            
            
    }
 	//class---------
 	class PopupListener extends MouseAdapter
 	{
+		public void mouseEntered(MouseEvent e)
+		{
+			maybeShowPopup(e);
+		}
 		public void mousePressed(MouseEvent e)
 		{
 			maybeShowPopup(e);
@@ -214,10 +260,39 @@ public class Browser extends JPanel implements TreeSelectionListener
     frame.pack();
     frame.setVisible(true);
     }*/
+	
+	//-------------------------getName method-----------------------------------------
+	
+	public String getName()
+	{
+		return id;
+	}
+	
+	//--------------------------getFile method for mouselistener-------------------------
+	public File getFile()
+	{
+		return curFile;
+	}
     
     //----------------------------- setup methods --------------------------------------
     
-    
+    //------------------------------Observer Pattern methods------------------------------
+	public void registerObserver(Observer observer)
+	{
+		registeredObservers.add(observer);
+	}
+	
+	public void removeObserver(Observer observer)
+	{
+		registeredObservers.remove(observer);
+	}
+	
+	public void notifyObservers()
+	
+	{
+		for(Observer obs : registeredObservers)
+			obs.updateBrowser(this);
+	}
     
     
     

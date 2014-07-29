@@ -19,6 +19,7 @@
 	<section name="ZipFileImportWizard">
 		<item value="false" key="WizardZipFileResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID"/>
 		<list key="WizardZipFileResourceImportPage1.STORE_SOURCE_NAMES_ID">
+			<item value="D:\all files\uni\SEF-Assessment2--submitted-Zipped.zip"/>
 			<item value="C:\Users\User\Documents\uni\Dissertation\archiveEclipse\tags_release_0_9_0_src-r4011\tags\release_0_9_0.zip"/>
 			<item value="C:\Users\User\Documents\uni\Dissertation\archiveEclipse\tags_release_0_9_0_src-r4011\tags\release_0_9_0\src.zip"/>
 			<item value="C:\Users\User\Downloads\tags_release_0_9_0_src-r4011.zip"/>

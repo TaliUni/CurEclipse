@@ -76,13 +76,14 @@ import java.util.ArrayList;
 
 
 
-public class Build5_1 extends JPanel
+public class Build5_1 extends JPanel implements Observer
 {
 
 	//------------------------------------GUI graphics--------------------------------------
 //	JPanel panel;
 	//JEditorPane htmlPane;
 	JTextArea ta;
+	Browser bro1, bro2;
 	
 	//lineStyle s are "Angled" (the default), "Horizontal", and "None".
 //	private static String lineStyle = "Horizontal";
@@ -120,12 +121,24 @@ public class Build5_1 extends JPanel
 		
     	super(new GridLayout(0,3));
     	
+    	
+    	
     	ta = new JTextArea(50,50);
         ta.setText("testing");
         
-    	add(new Browser());
-    	add(new Browser());
-    	add(ta);
+        //prob change to broBot/broTop
+        bro1 = new Browser("bro1");
+        bro2 = new Browser("bro2");
+        
+        add(ta);
+    	add(bro1);
+    	add(bro2);
+    	
+    	//-------------------------Observer Pattern registering Build as an observer on the Subjects (Browser and Textarea)---------
+    	
+    	bro1.registerObserver(this);
+    	bro2.registerObserver(this);
+    	//once textarea is a class register "this" (ie Build) as an observer on textarea
     	
     	//Create the scroll pane and add the tree to it. 
         /*      JScrollPane treeView = new JScrollPane(myTree);
@@ -177,7 +190,20 @@ public class Build5_1 extends JPanel
     frame.setVisible(true);
     }
     	
+    //-----------------------Observer Pattern update methods different depending which subject coming in from--------------
+    
+    public void updateBrowser(Browser brows)
+    {
+    	brows.getName();
+    	System.out.println(brows.getName());
+    	ta.setText(brows.getName());
+    	brows.getFile();
+    }
+    
+    public void updateCommandLine()
+    {
     	
+    }
     	
     	
   	  
