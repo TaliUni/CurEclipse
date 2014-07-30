@@ -1,0 +1,54 @@
+Build4_4
+
+
+change initial file input, to bring up all roots of computer and drives etc.
+top node becomes a string node with name, with all rest below coming up as directories.
+
+DONE 24/7/14
+
+
+To do: 2. popup to come up on hover over dir/file
+? change renderer re different things each file/dir etc is
+need to get it refreshing properly, as when a drive removed, it won't refresh properly.
+
+
+
+Build4_3
+
+To Do:
+
+Change listener for JTree, and all listeners.
+Add in mouselistener.
+Connect popup menu to come up 1. on right click on directory/file 
+Retain double click with left mouse/mousepad on file/directory opens up the next level.
+
+All above done 24 Jul 14
+To do: 2. popup to come up on hover over dir/file
+
+Build4_2
+Creating file browser
+Spec: create a file browser
+
+Created JTree, with FileDisplay as nodes.  FileDisplay are class that take in File and have their own toString() method
+which produces string of shortname.  getFile() retrieves the original file.
+Nodes are created at start, with starting node of top = input "working directory" currently C:\\
+And then the layer below also showing
+Further children of nodes, are not created.
+On clicking on a node (left hand click and mousepad click, one click) - highlights that node.
+click lh click (and mousepad click), double click - this creates the next layer of nodes (of the children of that node)
+If a node is "not a directory" - then dble clicking, lh mouse, on the node puts the file name into the text area at the bottom
+Created a new renderer for the tree, to mean that directories show as differnt to files (as previously only showed as folders
+if had already created and added the children to them, which was inefficient).
+
+Added in popup menu which comes with a rightclick anywhere in JTree
+
+
+DONE 24th July 2014
+
+Build4_1
+Creating file browser
+Spec: create a file browser
+
+create a tree that opens up to show files and directories.
+DONE 23rd July 2014
+

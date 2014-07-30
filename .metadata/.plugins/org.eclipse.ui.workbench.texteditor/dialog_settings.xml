@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="mousePressed" key="selection"/>
+		<item value="line 297" key="selection"/>
 		<list key="findhistory">
+			<item value="line 297"/>
+			<item value="notifyObservers"/>
+			<item value="getCurFile"/>
+			<item value="valueChanged"/>
 			<item value="mousePressed"/>
 			<item value="isPopupTrigger"/>
 			<item value="MyTreeCellRenderer"/>
 			<item value="TreeDemoF"/>
-			<item value="TreeDemo"/>
-			<item value="system.out"/>
-			<item value="FileDisplay"/>
-			<item value="File"/>
 		</list>
 		<list key="replacehistory">
 		</list>
