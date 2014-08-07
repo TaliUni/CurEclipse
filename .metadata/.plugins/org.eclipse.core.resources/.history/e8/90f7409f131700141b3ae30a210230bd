@@ -1,7 +1,0 @@
-package overview;
-
-public interface Observer {
-	
-	public void update();
-
-}

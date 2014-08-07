@@ -1,8 +1,0 @@
-package overview;
-
-public interface Observer {
-	
-	public void updateBrowser();
-	public void updateCommandLine();
-
-}

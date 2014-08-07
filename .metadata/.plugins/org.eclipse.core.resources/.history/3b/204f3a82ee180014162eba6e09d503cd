@@ -1,0 +1,433 @@
+package overview;
+
+
+/*
+Build5_2
+
+2 browsers and one command line
+build observes (ObserverFile/SubjectFile) Browser - bro1 and bro2
+build observes (ObserverTime/SubjectTime) Browser - bro1 and bro2
+implements a system to allow double click to be implemented, whilst ignoring the single click fired at the same time (using ObserverTime)
+L + mspd single click (TreeSelectionListener) - highlights and selects file/directory at
+L + mspd double click (TreeSelectionListener) - opens/closes file/directory at given node and populates next node
+
+refactored code
+
+
+
+
+To do: 2. own build menu to come up on hover over dir/file?
+need to get it refreshing properly, as when a drive removed, it won't refresh properly.
+
+
+
+
+
+Gummphy notes to keep-----------------------------------------------------
+Terms: FileVisitor FileTree, walking the filetree, visitor pattern
+File Browser GUI
+FileBro
+JTree / ModelTree
+youtube - java swing tutorial JTree
+oracle documentation How to use trees
+
+Tree nodes:
+setup the very top node (here = "top")
+then add nodes to it
+can add nodes to those nodes
+I will need to run through filesystem and count the number of directories/files etc
+Then add that number of different nodes
+Then add the directories/files etc to them auto
+
+Listing a Directory's Contents
+
+You can list all the contents of a directory by using the newDirectoryStream(Path) method. This method returns an object that implements the DirectoryStream interface. The class that implements the DirectoryStream interface also implements Iterable, so you can iterate through the directory stream, reading all of the objects. This approach scales well to very large directories.
+
+Remember: The returned DirectoryStream is a stream. If you are not using a try-with-resources statement, don't forget to close the stream in the finally block. The try-with-resources statement takes care of this for you.
+The following code snippet shows how to print the contents of a directory:
+
+Path dir = ...;
+try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+    for (Path file: stream) {
+        
+    }
+} catch (IOException | DirectoryIteratorException x) {
+    // IOException can never be thrown by the iteration.
+    // In this snippet, it can only be thrown by newDirectoryStream.
+    System.err.println(x);
+}
+
+
+*/
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.*;
+
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+
+
+
+public class Build5_2 extends JPanel implements ObserverFile, ObserverTime
+{
+
+	//------------------------------------GUI graphics--------------------------------------
+
+	JTextArea ta;
+	Browser broBot, broTop;
+	
+	public  Build5_2()
+    {
+      
+    	//-------------------------- layout --------------------------------------------------------
+    	
+    	super(new GridLayout(0,3));
+    	    	
+    	ta = new JTextArea(50,50);
+        ta.setText("testing");
+        
+        //prob change to broBot/broTop
+        broBot = new Browser("Browser Bottom");
+        broTop = new Browser("Browser Top");
+        
+        add(ta);
+    	add(broBot);
+    	add(broTop);
+    	
+    /*	JComboBox comb = new JComboBox();
+		
+    	comb.addItem("test");
+    	comb.add(broTop);
+    	comb.setAlignmentX(broBot.getXclick());
+    	comb.setAlignmentY(broBot.getYclick());*/
+    	
+    	//-------------------------Observer Patterns (ObserverFile/ObserverTime)----------------------------------
+    	//-------------------------registering Build as an observer on the Subjects (Browser and Textarea)---------
+    	
+    	broBot.registerObserverFile(this);
+    	broTop.registerObserverFile(this);
+    	broBot.registerObserverTime(this);
+    	broTop.registerObserverTime(this);
+    	//once textarea is a class register "this" (ie Build) as an observer on textarea
+    	
+   }	
+    
+	//----------------------CREATE AND SHOW GUI method to be called when a new instance of Build is created-----------------
+    public void createAndShowGUI()
+    {
+    	
+  //Create and set up the window.
+    JFrame frame = new JFrame("Tali File Browser");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    //Add content to the window.
+      frame.add(new Build5_2());
+  
+    //Display the window.
+    frame.pack();
+    frame.setVisible(true);
+    }
+    	
+    //-----------------------Observer Pattern update methods different depending which subject coming in from--------------
+   
+    /*
+     * update method for ObserverTime interface
+     * Timer is started in Browser - when a RIGHT mouseclick is identified - ?I think this needs to be a right mouseclick
+     * when Timer has completed it notifies build and calls this method
+     * depending on whether one or more mouseclicks occured during the time Timer was on changes what occurs
+     * this means that programme can identify a double click and do something on it, ignoring the first mouseclick
+     * as both are registered by the mouseclick method
+     */
+   
+    public void updateTime(Browser brows)
+    {
+    	//brows.cancelTimer();
+    	if(brows.getClickCount()==1)
+    	{
+    		//draw menu
+    		//System.out.println("build line 208 Draw Menu");
+    		//1. call a method in Browser to create and show popup as per code below
+    		//2 call a method in Browser to get the File from given node
+    		//2.1 highlight that node
+    		//2.2 make selection that node
+    		//2.3 notifyObserversFile()
+    		
+    		//do I need a new popup within method, or can it be global to class?
+    		//change msevnt to getMouseEvent() method which needs created in Browser
+    		brows.callPopup(brows.msevnt);
+    		brows.highlightSelectedNode(brows.msevnt);
+    		
+    	
+    		
+    	}
+    	if(brows.getClickCount()>1)
+    	{
+    		//create code to file details to CL
+    		System.out.println("Build line 212 file details to CL");
+    	}
+    		
+    }
+    public void updateBrowserFile(Browser brows)
+    {
+    	brows.getName();
+    	System.out.println("build line 198 " + brows.getName());
+    	System.out.println("build line 199 " + brows.getCurFile().getName());
+    //	ta.setText(brows.getFile().getName());
+    	ta.setText(brows.getCurFile().getName());
+    }
+   
+    
+    public void updateCommandLineFile()
+    {
+    	
+    }
+    	
+    	
+  	  
+    	//--------------------------setup initial path/entry point to file system----------------------
+    	/*   
+    	 //Works for windows, but need to have something generic.......??
+    	   initialPathStr = "C:\\";
+    	   
+    	   //set up initial path
+    	   initialPath = Paths.get(initialPathStr);
+    	   */
+    	   
+    	//------------------------------setup initial top node ----------------------------------------
+    	   
+    /*	   initialPathStr = "very top node";*/
+    	   
+    	   //--------------------- setup Tree and nodes initially --------------------------------------
+    	   
+    	   
+    	   
+    	   	   
+           //Create the nodes. Set up with just the layer below the top node showing, may change this to just have top node.
+    	   // set up with initialCreateNodes taking in a path initialCreateNodes(initialPath);
+    	   
+    	   //setup initial nodes without taking in a path
+    	   
+    	/*   initialCreateNodes(initialPathStr);
+    	   
+           
+           //Create a tree that allows one selection at a time.
+    	   //with top as the top node
+           myTree = new JTree(topNode);
+          
+           myTree.getSelectionModel().setSelectionMode (TreeSelectionModel.SINGLE_TREE_SELECTION);
+    
+           //Listen for when the selection changes.
+           myTree.addTreeSelectionListener(this);
+           
+           myTree.setCellRenderer(new MyTreeRender());*/
+           
+         //---------------------setup popups----------------------------------------------------------
+          	
+      /*    	popup = new JPopupMenu();
+          	menuItem = new JMenuItem("Mnu item");
+          	//menuItem.addActionListener(this);
+          	popup.add(menuItem);
+          	menuItem = new JMenuItem("a diff men item");
+          	//menuItem.addActionListener(this);
+          	popup.add(menuItem);
+          	
+          	MouseListener popupListener = new PopupListener();
+          	//add in listener when decide what want to do with click on menu
+         // 	myTree.addMouseListener(popupListener);
+          	
+          	MouseListener ml = new MouseAdapter() {
+                public void mousePressed(MouseEvent e) {
+                	
+                    int selRow = myTree.getRowForLocation(e.getX(), e.getY());
+                    TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
+                    if(selRow != -1) {
+                        
+                    	
+                        if(e.getButton()==3&&e.getClickCount() == 2) {
+                        	
+                        	popup.show(e.getComponent(), e.getX(), e.getY());
+                        	ta.setText(selPath.toString());
+                        }
+                        
+                    }
+                }
+            };
+            
+            myTree.addMouseListener(ml);
+            
+      */
+           
+           //-----------------------------------setup graphics: panels etc ----------------------------------
+           
+           
+	//class---------
+/*	class PopupListener extends MouseAdapter
+	{
+		public void mousePressed(MouseEvent e)
+		{
+			maybeShowPopup(e);
+		}
+		public void mouseReleased (MouseEvent e)
+		{
+			maybeShowPopup(e);
+		}
+		public void maybeShowPopup(MouseEvent e)
+		{
+			if (e.isPopupTrigger())
+			{
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		}
+			
+		
+	}*/
+    
+    
+    
+    //----------------------------- setup methods --------------------------------------
+    
+    
+    
+    
+    
+    //---------------------------------- node methods---------------------------
+    
+    
+    
+    
+    
+  /*  private void initialCreateNodes(String string)
+    {
+    	//creates top node with name established in constructor
+ 	   topNode = new DefaultMutableTreeNode(string);
+    	
+ 	   //set up first array of files to have all the roots of the system
+    	fileArray1 = File.listRoots();
+    	int i;
+		    
+    	for(i = 0; i<fileArray1.length;i++) 
+    	{
+    		//add all contained files/directories to topnode
+    		
+    		directory = new DefaultMutableTreeNode(new FileDisplay(fileArray1[i]));
+        	topNode.add(directory);
+    		
+       
+        	
+        	
+    		
+    	}
+    	
+    	
+    	
+    	
+    	
+    }
+    
+    
+    
+    
+    //------------------------ listener methods -----------------------------------
+   /* For any buttons leave as will be putting buttons in later
+    * public void actionPerformed(ActionEvent e)
+    {
+      if(e.getSource()==openFileDil)
+      {
+          
+         setupFileDialog();
+          ta.setText(getFileName());
+      
+      }
+    }*/
+    //---------------------------- required methods-------------------------------
+    /** Required by TreeSelectionListener interface. */
+ /*   public void valueChanged(TreeSelectionEvent e) 
+    {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) myTree.getLastSelectedPathComponent();
+ 
+        if (node == null) return;
+        
+        if(node == topNode)
+        {
+        	node.removeAllChildren();
+        	fileArray1 = File.listRoots();
+        	int i;
+    		    
+        	for(i = 0; i<fileArray1.length;i++) 
+        	{
+        		//add all contained files/directories to topnode
+        		
+        		directory = new DefaultMutableTreeNode(new FileDisplay(fileArray1[i]));
+            	topNode.add(directory);
+        		
+           
+            	
+            	
+        		
+        	}
+        }
+        //if node is not top node then do all the stuff
+        else
+        {
+        node.removeAllChildren();
+ 
+      //  Object nodeInfo = node.getUserObject();
+        
+        //check to see if all nodes within are files or directories
+        //if files leave
+        //if directories, add their own children to them
+       
+        Object nodeInfo = node.getUserObject();
+        Path thisPath = Paths.get(nodeInfo.toString());//myTree.getLastSelectedPathComponent().toString());
+        FileDisplay fileInfo = (FileDisplay)node.getUserObject();//new File(thisPath.toString());
+        File testFile = fileInfo.getFile();//fileInfo.getFile();
+        /*
+         * File f = (File)node;
+         */
+   /*     if(testFile.isDirectory()==false)
+        {
+        	ta.setText(testFile.getName());
+        }
+ 	   
+        else
+        {
+ 	
+        
+        if(testFile.isDirectory()==true)
+        {
+        	for(int i = 0; i<testFile.listFiles().length; i++)
+        	{
+        		
+	        	directory = new DefaultMutableTreeNode(new FileDisplay (testFile.listFiles()[i]));
+	        	node.add(directory);
+	  
+        	}
+        }
+        }
+        }
+        
+    }*/
+    
+   
+     
+     //---------------------------------additional classes-----------------------------------------------
+     
+     
+     
+
+}

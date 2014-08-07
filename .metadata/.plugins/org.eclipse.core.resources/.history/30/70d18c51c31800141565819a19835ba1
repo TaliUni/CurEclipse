@@ -1,0 +1,9 @@
+package overview;
+
+public interface Subject {
+	
+	public void registerObserver(ObserverFile obs);
+	public void removeObserver(ObserverFile obs);
+	public void notifyObservers();
+
+}

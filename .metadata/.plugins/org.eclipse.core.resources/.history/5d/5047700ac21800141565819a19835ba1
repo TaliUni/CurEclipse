@@ -1,0 +1,8 @@
+package overview;
+
+public interface SubjectTime {
+	public void registerObserverTime(Observer obs);
+	public void removeObserverTime(Observer obs);
+	public void notifyObserversTime();
+
+}

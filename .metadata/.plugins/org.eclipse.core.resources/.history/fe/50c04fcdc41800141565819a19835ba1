@@ -1,0 +1,8 @@
+package overview;
+
+public interface ObserverFile {
+	
+	public void updateBrowser(Browser brows);
+	public void updateCommandLine();
+
+}
