@@ -30,11 +30,10 @@ import java.util.Timer;
 
 
 
-public class Browser extends JPanel implements TreeSelectionListener, SubjectFile, MouseListener, ActionListener, ObserverPopMenu
+public class Browser extends JPanel implements TreeSelectionListener, SubjectFile, MouseListener, ActionListener
 {
 	//---------------------MenuItem----------------------------------------------------
 	private String curMenuItem;
-	private String toCommandLine;
 	//--------------------MouseEvent variables-------------------------------------------
 	private int collectClick;
 	private MouseEvent currMseEvent;
@@ -252,8 +251,8 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
     }
 
 
-	public void callPopup(MouseEvent e)
-	{/*
+	public JPopupMenu callPopup(MouseEvent e)
+	{
 		JPopupMenu popup = new JPopupMenu();
       	JMenuItem menuItem = new JMenuItem("Mnu item");
       	menuItem.addActionListener(this);
@@ -263,10 +262,7 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
       	popup.add(menuItem);
       	
       	popup.show(e.getComponent(), e.getX(), e.getY());
-      	return popup;*/
-		Menu men = new Menu();
-		men.registerObserverPopMenu(this);
-		men.show(e);
+      	return popup;
 	}
 	
 	public void highlightSelectedNode(MouseEvent e)
@@ -306,7 +302,7 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
         notifyObserversFile();
 	}
 	
-	public void rightSingleClick(MouseEvent e)
+	public JPopupMenu rightSingleClick(MouseEvent e)
 	{
 		//1. call a method in Browser to create and show popup as per code below
 		//2 call a method in Browser to get the File from given node
@@ -316,9 +312,9 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
 		
 		//do I need a new popup within method, or can it be global to class?
 		//change msevnt to getMouseEvent() method which needs created in Browser
-		callPopup(e);//brows.msevnt);
+		JPopupMenu pop = callPopup(e);//brows.msevnt);
 		highlightSelectedNode(e);//(brows.msevnt);
-		//need to retrive file info
+	/*	//need to retrive file info
 		TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
 	       // if(selRow != -1)
 	      //clear all selections for the tree
@@ -329,9 +325,9 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
 	        Path thisPath = Paths.get(nodeInfo.toString());
 	        FileDisplay fileInfo = (FileDisplay)node.getUserObject();
 	        File testFile = fileInfo.getFile();//fileInfo.getFile();
-	        curFile = testFile;
+	        curFile = testFile;*/
 		//ta.setText("single event");
-		//return pop;
+		return pop;
 	}
 	//--------------------------End of MouseReleased and relevant methods-------------------------
 	
@@ -490,15 +486,6 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
     	}
 
     }
-	@Override
-	public void updatePopMenu(Menu menu) {
-		System.out.println("Browser line 494");
-		curMenuItem = menu.getCurMenuItem();
-		notifyObserversFile();
-		
-		
-		
-	}
 
 	
     

@@ -1,0 +1,39 @@
+package overview;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
+public class Menu implements ActionListener{
+	
+	JPopupMenu popup;
+	
+	public Menu(){
+	popup = new JPopupMenu();
+	
+  	JMenuItem menuItem = new JMenuItem("Mnu item");
+  	menuItem.addActionListener(this);
+  	popup.add(menuItem);
+  	menuItem = new JMenuItem("a diff men item");
+  	menuItem.addActionListener(this);
+  	popup.add(menuItem);
+	}
+	
+	public void show(MouseEvent e)
+	{
+		popup.show(e.getComponent(), e.getX(), e.getY());
+	}
+  	
+  	
+	
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

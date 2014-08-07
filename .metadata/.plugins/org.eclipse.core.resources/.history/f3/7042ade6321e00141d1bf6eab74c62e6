@@ -265,7 +265,6 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
       	popup.show(e.getComponent(), e.getX(), e.getY());
       	return popup;*/
 		Menu men = new Menu();
-		men.registerObserverPopMenu(this);
 		men.show(e);
 	}
 	
@@ -492,9 +491,8 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
     }
 	@Override
 	public void updatePopMenu(Menu menu) {
-		System.out.println("Browser line 494");
 		curMenuItem = menu.getCurMenuItem();
-		notifyObserversFile();
+	//	notifyObserversFile();
 		
 		
 		

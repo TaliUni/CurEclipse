@@ -30,11 +30,10 @@ import java.util.Timer;
 
 
 
-public class Browser extends JPanel implements TreeSelectionListener, SubjectFile, MouseListener, ActionListener, ObserverPopMenu
+public class Browser extends JPanel implements TreeSelectionListener, SubjectFile, MouseListener, ActionListener
 {
 	//---------------------MenuItem----------------------------------------------------
 	private String curMenuItem;
-	private String toCommandLine;
 	//--------------------MouseEvent variables-------------------------------------------
 	private int collectClick;
 	private MouseEvent currMseEvent;
@@ -265,7 +264,6 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
       	popup.show(e.getComponent(), e.getX(), e.getY());
       	return popup;*/
 		Menu men = new Menu();
-		men.registerObserverPopMenu(this);
 		men.show(e);
 	}
 	
@@ -318,7 +316,7 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
 		//change msevnt to getMouseEvent() method which needs created in Browser
 		callPopup(e);//brows.msevnt);
 		highlightSelectedNode(e);//(brows.msevnt);
-		//need to retrive file info
+	/*	//need to retrive file info
 		TreePath selPath = myTree.getPathForLocation(e.getX(), e.getY());
 	       // if(selRow != -1)
 	      //clear all selections for the tree
@@ -329,7 +327,7 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
 	        Path thisPath = Paths.get(nodeInfo.toString());
 	        FileDisplay fileInfo = (FileDisplay)node.getUserObject();
 	        File testFile = fileInfo.getFile();//fileInfo.getFile();
-	        curFile = testFile;
+	        curFile = testFile;*/
 		//ta.setText("single event");
 		//return pop;
 	}
@@ -490,15 +488,6 @@ public class Browser extends JPanel implements TreeSelectionListener, SubjectFil
     	}
 
     }
-	@Override
-	public void updatePopMenu(Menu menu) {
-		System.out.println("Browser line 494");
-		curMenuItem = menu.getCurMenuItem();
-		notifyObserversFile();
-		
-		
-		
-	}
 
 	
     

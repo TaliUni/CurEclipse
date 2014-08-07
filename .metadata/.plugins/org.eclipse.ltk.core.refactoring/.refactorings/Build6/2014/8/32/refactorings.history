@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;overview.Build5_2&apos; to &apos;Build6&apos;&#x0D;&#x0A;- Original project: &apos;Build6&apos;&#x0D;&#x0A;- Original element: &apos;overview.Build5_2&apos;&#x0D;&#x0A;- Renamed element: &apos;overview.Build6&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Build5_2&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;overview{Build5_2.java[Build5_2" matchStrategy="1" name="Build6" qualified="false" references="true" similarDeclarations="false" stamp="1407412912163" textual="false" version="1.0"/>
+</session>
